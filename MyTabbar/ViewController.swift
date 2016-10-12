@@ -9,7 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource{
-
+    
     let tableView = UITableView()
     let dataArray = NSMutableArray()
     let titleArray = NSMutableArray()
@@ -39,10 +39,10 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         ///获取广告数据
         self.getAdvertisingData()
         
-//        for i in 1...100 {
-//            let str = "这就是帅气的数字"+String(i)
-//            dataArray.addObject(str)
-//        }
+        //        for i in 1...100 {
+        //            let str = "这就是帅气的数字"+String(i)
+        //            dataArray.addObject(str)
+        //        }
         
     }
     
@@ -74,7 +74,7 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
                 let model = GuangGaoModel().ReturnProductModel(dic1 as! NSDictionary)
                 self.imageArray.addObject(model)
             }
-            self.scrollView.contentSize=CGSizeMake(CGFloat(self.imageArray.count+1)/3*2*width, 0)
+            self.scrollView.contentSize=CGSizeMake(CGFloat(self.imageArray.count+1)*width, 0)
             self.addImage()
         }
     }
@@ -82,14 +82,14 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
     func addImage(){
         for i in 0...imageArray.count {
             let view = UIView()
-            view.frame=CGRectMake(CGFloat(i)*width*2/3, 0, width*2/3, width*318/375)
+            view.frame=CGRectMake(CGFloat(i)*width, 0, width, width*318/375)
             view.tag=i;
             view.clipsToBounds=true;
             scrollView.addSubview(view)
             let imageView = UIImageView()
             var model : GuangGaoModel?
             if i==0 {
-                 model = imageArray[imageArray.count-1] as? GuangGaoModel
+                model = imageArray[imageArray.count-1] as? GuangGaoModel
             }else{
                 model = imageArray[i-1] as? GuangGaoModel
             }
@@ -100,14 +100,14 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
             
         }
         
-//        timer?.invalidate()
-//        timer=nil;
-        scrollView.setContentOffset(CGPointMake(2/3*width, 0), animated: false)
+        //        timer?.invalidate()
+        //        timer=nil;
+        scrollView.setContentOffset(CGPointMake(width, 0), animated: false)
         
         let view = scrollView.viewWithTag(1)
         view?.bounds=CGRectMake(0, 0, width, width*318/375)
         scrollView.bringSubviewToFront(view!)
-//        tableView.reloadData()
+        //        tableView.reloadData()
         
         
     }
@@ -118,38 +118,38 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         scrollView.tag=100;
         scrollView.pagingEnabled=true;
         
-//        let wid = CGFloat(imageArray.count)*width
+        //        let wid = CGFloat(imageArray.count)*width
         tableView.tableHeaderView=scrollView
         
     }
     func timeChange() {
         
-//        print(num)
+        //        print(num)
         if imageArray.count==0 {
             return
         }
-//        if num==0 {
-//            scrollView.setContentOffset(CGPointMake(width, 0), animated: true)
-//        }else{
-//            
-//        }
-        scrollView.setContentOffset(CGPointMake(CGFloat(num*2/3)*width, 0), animated: true)
-//        if num%imageArray.count==0 {
-//            scrollView.setContentOffset(CGPointMake(CGFloat(num%imageArray.count)*width, 0), animated: false)
-//        }else{
-//            scrollView.setContentOffset(CGPointMake(CGFloat(num%imageArray.count)*width, 0), animated: true)
-//        }
+        //        if num==0 {
+        //            scrollView.setContentOffset(CGPointMake(width, 0), animated: true)
+        //        }else{
+        //
+        //        }
+        scrollView.setContentOffset(CGPointMake(CGFloat(num)*width, 0), animated: true)
+        //        if num%imageArray.count==0 {
+        //            scrollView.setContentOffset(CGPointMake(CGFloat(num%imageArray.count)*width, 0), animated: false)
+        //        }else{
+        //            scrollView.setContentOffset(CGPointMake(CGFloat(num%imageArray.count)*width, 0), animated: true)
+        //        }
         
         
-//        if num==6 {
-//            let view = scrollView.viewWithTag(0)
-//            scrollView.bringSubviewToFront(view!)
-//        }else{
-//            let view = scrollView.viewWithTag(num)
-//            scrollView.bringSubviewToFront(view!)
-//        }
+        //        if num==6 {
+        //            let view = scrollView.viewWithTag(0)
+        //            scrollView.bringSubviewToFront(view!)
+        //        }else{
+        //            let view = scrollView.viewWithTag(num)
+        //            scrollView.bringSubviewToFront(view!)
+        //        }
         
-       num += 1
+        num += 1
         
         
     }
@@ -157,122 +157,122 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         
     }
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-//        [myTimer setFireDate:[NSDate distantFuture]];
-//        暂停定时器
+        //        [myTimer setFireDate:[NSDate distantFuture]];
+        //        暂停定时器
         timer?.invalidate()
         timer=nil
         if scrollView.tag==100 {
             print(num)
-           
             
-//            if num==0||num==4 {
-//                
-//            }else{
-//                num = num%imageArray.count - 1
-//            }
+            
+            //            if num==0||num==4 {
+            //
+            //            }else{
+            //                num = num%imageArray.count - 1
+            //            }
             
             
         }
         
     }
-//    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-//        self.performSelector(#selector(startTime), withObject: nil, afterDelay: 3)
-//    }
-//    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
-//        self.performSelector(#selector(startTime), withObject: nil, afterDelay: 3)
-//    }
+    //    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    //        self.performSelector(#selector(startTime), withObject: nil, afterDelay: 3)
+    //    }
+    //    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+    //        self.performSelector(#selector(startTime), withObject: nil, afterDelay: 3)
+    //    }
     func scrollViewDidScroll(scrollView: UIScrollView) {
-//        print(scrollView.contentOffset.x);
-//        if scrollView.tag==100 && timer==nil {
-//            let xx = scrollView.contentOffset.x
-//            if xx>=1656.0||xx<=0.0 {
-//                return
-//            }
-//            ///左右滑动
-//            if xx>=contentOffsetX {
-//                
-//                if num==4 {
-//                     print(num)
-//                }else{
-//                    num = num%imageArray.count + 1
-//                }
-//
-//            }else{
-//                if num==0 {
-//                     print(num)
-//                }else{
-//                    num = num%imageArray.count - 1
-//                }
-//            }
-//            print(num)
-//        }
+        //        print(scrollView.contentOffset.x);
+        //        if scrollView.tag==100 && timer==nil {
+        //            let xx = scrollView.contentOffset.x
+        //            if xx>=1656.0||xx<=0.0 {
+        //                return
+        //            }
+        //            ///左右滑动
+        //            if xx>=contentOffsetX {
+        //
+        //                if num==4 {
+        //                     print(num)
+        //                }else{
+        //                    num = num%imageArray.count + 1
+        //                }
+        //
+        //            }else{
+        //                if num==0 {
+        //                     print(num)
+        //                }else{
+        //                    num = num%imageArray.count - 1
+        //                }
+        //            }
+        //            print(num)
+        //        }
         
         
         print(num)
         if scrollView.tag==100 {
             
-//            // 如果当前页是第0页就跳转到数组中最后一个地方进行跳转
-//            if num == 0 {
-//                scrollView.setContentOffset(CGPointMake(width, 0), animated: false)
-//                num=1;
-//            }else if num == imageArray.count+2 {
-//                // 如果是第最后一页就跳转到数组第一个元素的地点
-//                scrollView.setContentOffset(CGPointMake(0, 0), animated: false);
-//                num=0;
-//            }
-//            //            self.performSelector(#selector(startTime), withObject: nil, afterDelay: 3)
+            //            // 如果当前页是第0页就跳转到数组中最后一个地方进行跳转
+            //            if num == 0 {
+            //                scrollView.setContentOffset(CGPointMake(width, 0), animated: false)
+            //                num=1;
+            //            }else if num == imageArray.count+2 {
+            //                // 如果是第最后一页就跳转到数组第一个元素的地点
+            //                scrollView.setContentOffset(CGPointMake(0, 0), animated: false);
+            //                num=0;
+            //            }
+            //            //            self.performSelector(#selector(startTime), withObject: nil, afterDelay: 3)
             
             
-            let page = scrollView.contentOffset.x / scrollView.frame.size.width/2*3;
+            let page = scrollView.contentOffset.x / scrollView.frame.size.width;
             print(page)
             
             if page>CGFloat(imageArray.count) {
                 scrollView.setContentOffset(CGPointMake(0, 0), animated: false)
                 num=0;
             }else if page<0 {
-                scrollView.setContentOffset(CGPointMake(2/3*width*CGFloat(imageArray.count), 0), animated: false)
+                scrollView.setContentOffset(CGPointMake(width*CGFloat(imageArray.count), 0), animated: false)
                 num=imageArray.count-1;
             }
         }
-
+        
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         
         
-//        if scrollView.tag==100 {
-//            let page = scrollView.contentOffset.x / scrollView.frame.size.width;
-//            // 如果当前页是第0页就跳转到数组中最后一个地方进行跳转
-//            if page == 0 {
-//                 scrollView.setContentOffset(CGPointMake(CGFloat(num%imageArray.count)*width, 0), animated: false)
-//            }else if page == CGFloat(imageArray.count + 2){
-//                // 如果是第最后一页就跳转到数组第一个元素的地点
-//                 scrollView.setContentOffset(CGPointMake(width, 0), animated: false);
-//            }
-////            self.performSelector(#selector(startTime), withObject: nil, afterDelay: 3)
-//        }
+        //        if scrollView.tag==100 {
+        //            let page = scrollView.contentOffset.x / scrollView.frame.size.width;
+        //            // 如果当前页是第0页就跳转到数组中最后一个地方进行跳转
+        //            if page == 0 {
+        //                 scrollView.setContentOffset(CGPointMake(CGFloat(num%imageArray.count)*width, 0), animated: false)
+        //            }else if page == CGFloat(imageArray.count + 2){
+        //                // 如果是第最后一页就跳转到数组第一个元素的地点
+        //                 scrollView.setContentOffset(CGPointMake(width, 0), animated: false);
+        //            }
+        ////            self.performSelector(#selector(startTime), withObject: nil, afterDelay: 3)
+        //        }
         let page = scrollView.contentOffset.x / scrollView.frame.size.width;
         num = NSInteger(page)
         print(num)
-        let point = scrollView.contentOffset
-        contentOffsetX = point.x
+        //        let point = scrollView.contentOffset
+        //        contentOffsetX = point.x
         self.startTime(scrollView)
-//        self.performSelector(#selector(startTime), withObject: scrollView, afterDelay: 2)
+        //        self.performSelector(#selector(startTime), withObject: scrollView, afterDelay: 2)
     }
     func startTime(scrollView:UIScrollView){
         //开启定时器
-//        timer?.fireDate=NSDate.distantPast()
-        let point = scrollView.contentOffset
-        if contentOffsetX==point.x {
-            timer=nil
-            timer?.invalidate()
-            if timer==nil {
-                timer=NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector:#selector(timeChange) , userInfo: nil, repeats: true)
-            }else{
-                //            timer=nil
-                //            timer?.invalidate()
-                //            timer=NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector:#selector(timeChange) , userInfo: nil, repeats: true)
-            }
+        //        timer?.fireDate=NSDate.distantPast()
+        //        let point = scrollView.contentOffset
+        //        if contentOffsetX==point.x {
+        timer=nil
+        timer?.invalidate()
+        if timer==nil {
+            timer=NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector:#selector(timeChange) , userInfo: nil, repeats: true)
+            //            }else{
+            //                //            timer=nil
+            //                //            timer?.invalidate()
+            //                //            timer=NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector:#selector(timeChange) , userInfo: nil, repeats: true)
+            //            }
         }
         
         
@@ -284,13 +284,13 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         dic.setObject("上海", forKey: "City")
         dic.setObject("ios", forKey: "platformtype")
         dic.setObject(locationString(), forKey: "timestamp")
-//        [dic setObject:[Utils locationString] forKey:@"timestamp"];
+        //        [dic setObject:[Utils locationString] forKey:@"timestamp"];
         dic.setObject(versionnum(), forKey: "versionnum")
-       let  json1 = json(dic)
-    
-       let sign = md5String((json1 as String)+"12345678")
+        let  json1 = json(dic)
         
-       let  schttpClient = SCHttpClient()
+        let sign = md5String((json1 as String)+"12345678")
+        
+        let  schttpClient = SCHttpClient()
         
         schttpClient.SoapTheRequest(json1 as String, sign: sign, soapAction: KGetHomePageModuleListurl, macthingElement: KGetHomePageModuleListmaching, method: KGetHomePageModuleListmethod, URL: AdvertisingWebServicesURL) { (soapResults) in
             print(soapResults)
@@ -327,7 +327,7 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         switch (indexPath.section) {
         case 0:
             return  128*width/375.0;
-        
+            
         case 1:
             if (indexPath.row==0) {
                 return   226*width/375.0;
@@ -353,9 +353,9 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
             
             let product :ProductModel = array[indexPath.row] as! ProductModel
             
-//            cell!.sec1Image1.sd_setImageWithURL(NSURL(string: product.ImgPath), placeholderImage: nil)
+            //            cell!.sec1Image1.sd_setImageWithURL(NSURL(string: product.ImgPath), placeholderImage: nil)
             cell?.sec1Image1.sd_setImageWithURL(NSURL(string: product.ImgPath), placeholderImage: nil, options: SDWebImageOptions.RetryFailed, progress: { ( receivedSize, expectedSize) in
-//                showHMProgressView((cell?.sec1Image1)!, Progress: CGFloat(receivedSize/expectedSize) )
+                //                showHMProgressView((cell?.sec1Image1)!, Progress: CGFloat(receivedSize/expectedSize) )
                 }, completed: nil)
         }else if indexPath.section==1{
             
@@ -405,8 +405,8 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        self.getdata()
-//        self.navigationController?.pushViewController(childViewController(), animated: true)
+        //        self.getdata()
+        //        self.navigationController?.pushViewController(childViewController(), animated: true)
         
     }
     
@@ -426,7 +426,7 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
+    
+    
 }
 
