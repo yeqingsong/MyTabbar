@@ -75,8 +75,8 @@ class ZTTabBar: UIView {
         
     }
     func dianji(sender:MYButton)  {
-        print(sender.tag);
-        print("165451");
+//        print(sender.tag);
+//        print("165451");
         if lastSelectButton==sender {
             return
         }

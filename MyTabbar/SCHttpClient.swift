@@ -12,7 +12,7 @@ typealias SCHttpSuccessBlock = (AnyObject) -> ()
 class SCHttpClient: NSObject,NSURLConnectionDataDelegate,NSURLSessionDelegate,NSURLSessionDataDelegate {
     
     var _machingElement = String()
-    var soapData : NSMutableData?
+    var soapData = NSMutableData()
     class var shared: SCHttpClient {
         return Inner.instance
     }
@@ -47,24 +47,56 @@ class SCHttpClient: NSObject,NSURLConnectionDataDelegate,NSURLSessionDelegate,NS
         ///这里的4是什么意思
         request.HTTPBody=soapMsg.dataUsingEncoding(NSUTF8StringEncoding)
         
+        let manager = AFURLSessionManager.init(sessionConfiguration: NSURLSessionConfiguration.defaultSessionConfiguration());
+        manager.responseSerializer=AFHTTPResponseSerializer();
+        manager.dataTaskWithRequest(request) { (response, object, error) in
+            if error==nil {
+                let data:NSData = object as! NSData;
+                SoapNAL.sharedInstance.parserSoapXML(data , maching: macthingElement) { (parserXML) in
+                    let mstr = parserXML as! NSMutableString
+                    let str="null"
+                    var substr = mstr.rangeOfString(str)
+                    while(substr.location != NSNotFound) {
+                        //                [mstr replaceCharactersInRange:substr withString:@"\"\""];
+                        mstr.replaceCharactersInRange(substr, withString: "\"\"")
+                        substr = mstr.rangeOfString(str);
+                    }
+                    let str3="(\"\")"
+                    var substr3 = mstr.rangeOfString(str3)
+                    while(substr3.location != NSNotFound) {
+                        //                [mstr replaceCharactersInRange:substr withString:@"\"\""];
+                        mstr.deleteCharactersInRange(mstr.rangeOfString(str3))
+                        substr3 = mstr.rangeOfString(str3);
+                    }
+                    let data1111=mstr.dataUsingEncoding(NSUTF8StringEncoding)
+                    let result=try?NSJSONSerialization.JSONObjectWithData(data1111!, options: [])
+                    sucess(result!)
+                }
+
+            }else{
+                print("Error: %@, %@, %@", error, response, object);
+            }
+            }.resume();
         
-       //使用NSURLSession
-        let Session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: self, delegateQueue: NSOperationQueue())
-        soapData=NSMutableData();
-        Session.dataTaskWithRequest(request).resume()
         
         
-        
-        print(soapMsg)
-///使用NSURLConnection
-//        let connection = NSURLConnection(request: request, delegate: self)
-//        if ((connection) != nil) {
-//            soapData=NSMutableData();
-//        }
-        
-        
-        
-        self.successBlock = sucess
+//       //使用NSURLSession
+//        let Session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: self, delegateQueue: NSOperationQueue())
+//        soapData=NSMutableData();
+//        Session.dataTaskWithRequest(request).resume()
+//        
+//        
+//        
+////        print(soapMsg)
+/////使用NSURLConnection
+////        let connection = NSURLConnection(request: request, delegate: self)
+////        if ((connection) != nil) {
+////            soapData=NSMutableData();
+////        }
+//        
+//        
+//        
+//        self.successBlock = sucess
     }
     
     
@@ -77,34 +109,34 @@ class SCHttpClient: NSObject,NSURLConnectionDataDelegate,NSURLSessionDelegate,NS
 //    }
     
     //这个方法与上面注释的方法只能存在一个,上面的方法优先级高于本方法同时存在会执行上面的方法
-    func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
-        soapData!.appendData(data)
-        
-        SoapNAL.shared.parserSoapXML(soapData!, maching: _machingElement) { (parserXML) in
-            let mstr = parserXML as! NSMutableString
-            let str="null"
-            var substr = mstr.rangeOfString(str)
-            while(substr.location != NSNotFound) {
-                //                [mstr replaceCharactersInRange:substr withString:@"\"\""];
-                mstr.replaceCharactersInRange(substr, withString: "\"\"")
-                substr = mstr.rangeOfString(str);
-            }
-            let str3="(\"\")"
-            var substr3 = mstr.rangeOfString(str3)
-            while(substr3.location != NSNotFound) {
-                //                [mstr replaceCharactersInRange:substr withString:@"\"\""];
-                mstr.deleteCharactersInRange(mstr.rangeOfString(str3))
-                substr3 = mstr.rangeOfString(str3);
-            }
-            let data1111=mstr.dataUsingEncoding(NSUTF8StringEncoding)
-            let result=try?NSJSONSerialization.JSONObjectWithData(data1111!, options: [])
-            self.successBlock?(result!)
-        }
-    }
-    
-    func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
-        print(error)
-    }
+//    func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
+//        soapData!.appendData(data)
+//        
+//        SoapNAL.sharedInstance.parserSoapXML(soapData!, maching: _machingElement) { (parserXML) in
+//            let mstr = parserXML as! NSMutableString
+//            let str="null"
+//            var substr = mstr.rangeOfString(str)
+//            while(substr.location != NSNotFound) {
+//                //                [mstr replaceCharactersInRange:substr withString:@"\"\""];
+//                mstr.replaceCharactersInRange(substr, withString: "\"\"")
+//                substr = mstr.rangeOfString(str);
+//            }
+//            let str3="(\"\")"
+//            var substr3 = mstr.rangeOfString(str3)
+//            while(substr3.location != NSNotFound) {
+//                //                [mstr replaceCharactersInRange:substr withString:@"\"\""];
+//                mstr.deleteCharactersInRange(mstr.rangeOfString(str3))
+//                substr3 = mstr.rangeOfString(str3);
+//            }
+//            let data1111=mstr.dataUsingEncoding(NSUTF8StringEncoding)
+//            let result=try?NSJSONSerialization.JSONObjectWithData(data1111!, options: [])
+//            self.successBlock?(result!)
+//        }
+//    }
+//    
+//    func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
+//        print(error)
+//    }
     
     
     

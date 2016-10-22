@@ -84,8 +84,8 @@ func json(dic:NSMutableDictionary) -> NSString{
     str = str.stringByReplacingOccurrencesOfString("\\", withString: "" )
     
 //    let str1 = str.stringByReplacingOccurrencesOfString("\\", withString: "")
-    print(str)
-    print(NSString(string: str))
+//    print(str)
+//    print(NSString(string: str))
     return NSString(string: str) ;
     
 }

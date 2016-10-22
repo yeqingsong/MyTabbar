@@ -12,18 +12,33 @@ import UIKit
 class SoapNAL: NSObject ,NSXMLParserDelegate{
 //创建单例类
     
-    class var shared: SoapNAL {
-        return Inner.instance
-    }
-    struct Inner {
-        static let instance = SoapNAL()
-    }
+//    class var shared: SoapNAL {
+//        return Inner.instance
+//    }
+//    struct Inner {
+//        static let instance = SoapNAL()
+//    }
+    
+        class var sharedInstance: SoapNAL {
+            struct Private {
+                static var instance: SoapNAL?//静态变量
+                static var token: dispatch_once_t = 0//静态变量
+            }
+            
+            dispatch_once(&Private.token) {//线程安全
+                Private.instance = SoapNAL()
+            }
+            
+            return Private.instance!
+        }
+    
+    
     var soapBlock :SCHttpSuccessBlock?
     var xmlParser = NSXMLParser()
     var _MacthingElement = NSString()
     var _soapResults = NSMutableString()
     var elementFound = Bool()
-    func parserSoapXML(soapData:NSMutableData, maching:NSString, block:SCHttpSuccessBlock){
+    func parserSoapXML(soapData:NSData, maching:NSString, block:SCHttpSuccessBlock){
         self.soapBlock=block;
         _MacthingElement=maching;
         xmlParser=NSXMLParser.init(data: soapData)

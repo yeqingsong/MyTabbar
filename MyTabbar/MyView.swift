@@ -20,7 +20,7 @@ class MyView: UIView {
         }
     }
     override func drawRect(rect: CGRect) {
-        print("asdadasdqqqqqwwwwwwww");
+//        print("asdadasdqqqqqwwwwwwww");
         let ctx = UIGraphicsGetCurrentContext();
         
         // 2.拼接路径

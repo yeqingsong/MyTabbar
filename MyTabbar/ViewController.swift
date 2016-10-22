@@ -35,14 +35,42 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         self.tableView.tableFooterView=UIView()
         ///创建scrollView
         self.createScrollView()
-        self.getdata()
+        
         ///获取广告数据
-        self.getAdvertisingData()
+        
         
         //        for i in 1...100 {
         //            let str = "这就是帅气的数字"+String(i)
         //            dataArray.addObject(str)
         //        }
+        // 创建信号量
+//         let sem = dispatch_semaphore_create(0);
+        
+        let dispatchQueue = dispatch_get_global_queue(0, 0)
+        let dispatchGroup = dispatch_group_create();
+        dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), {
+            print("end")
+            self.tableView.reloadData()
+        });
+        dispatch_group_async(dispatchGroup, dispatchQueue, {
+//            [NSThread sleepForTimeInterval:4];
+            for i in 0...1000 {
+                print(i);
+                
+            }
+            print("dispatch-1")
+            NSThread.sleepForTimeInterval(4)
+            print("dispatch-1")
+            
+            self.getdata()
+//            dispatch_semaphore_signal(sem)
+            });
+       
+        dispatch_group_async(dispatchGroup, dispatchQueue, {
+            print("dspatch-2")
+            self.getAdvertisingData()
+            
+            });
         
     }
     
@@ -68,7 +96,7 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         let  schttpClient = SCHttpClient()
         
         schttpClient.SoapTheRequest(json1 as String, sign: sign, soapAction: KGetAdvertisingMainListurl, macthingElement: KGetAdvertisingMainListmaching, method: KGetAdvertisingMainListmethod, URL: AdvertisingWebServicesURL) { (soapResults) in
-            print(soapResults)
+//            print(soapResults)
             let arr = soapResults.objectForKey("Data")
             for dic1 in arr as! NSArray{
                 let model = GuangGaoModel().ReturnProductModel(dic1 as! NSDictionary)
@@ -162,7 +190,7 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         timer?.invalidate()
         timer=nil
         if scrollView.tag==100 {
-            print(num)
+//            print(num)
             
             
             //            if num==0||num==4 {
@@ -208,7 +236,7 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         //        }
         
         
-        print(num)
+//        print(num)
         if scrollView.tag==100 {
             
             //            // 如果当前页是第0页就跳转到数组中最后一个地方进行跳转
@@ -224,7 +252,7 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
             
             
             let page = scrollView.contentOffset.x / scrollView.frame.size.width;
-            print(page)
+//            print(page)
             
             if page>CGFloat(imageArray.count) {
                 scrollView.setContentOffset(CGPointMake(0, 0), animated: false)
@@ -253,12 +281,13 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         //        }
         let page = scrollView.contentOffset.x / scrollView.frame.size.width;
         num = NSInteger(page)
-        print(num)
+//        print(num)
         //        let point = scrollView.contentOffset
         //        contentOffsetX = point.x
         self.startTime(scrollView)
         //        self.performSelector(#selector(startTime), withObject: scrollView, afterDelay: 2)
     }
+    
     func startTime(scrollView:UIScrollView){
         //开启定时器
         //        timer?.fireDate=NSDate.distantPast()
@@ -293,7 +322,7 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         let  schttpClient = SCHttpClient()
         
         schttpClient.SoapTheRequest(json1 as String, sign: sign, soapAction: KGetHomePageModuleListurl, macthingElement: KGetHomePageModuleListmaching, method: KGetHomePageModuleListmethod, URL: AdvertisingWebServicesURL) { (soapResults) in
-            print(soapResults)
+            print("11111111111")
             let arr=soapResults.objectForKey("Data")
             for dic in arr as! NSArray{
                 let ModuleInfoListArr=NSMutableArray()
@@ -303,12 +332,13 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
                     let product = ProductModel().ReturnProductModel(dic2 as! NSDictionary, ModuleInfoListdic: dic1 as! NSDictionary)
                     ModuleInfoListArr.addObject(product)
                 }
-                self.titleArray.addObject(dic.objectForKey("Title")!)
-                self.dataArray.addObject(ModuleInfoListArr)
+            self.titleArray.addObject(dic.objectForKey("Title")!)
+            self.dataArray.addObject(ModuleInfoListArr)
+                
             }
             self.tableView.reloadData()
         }
-        print(self.dataArray)
+//        print(self.dataArray)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
